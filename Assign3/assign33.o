@@ -1,0 +1,207 @@
+XH
+H 1 areas 3 global symbols
+M assign33.c
+S _printf Ref0000
+A text size 158 flags 0
+dbfile C:\DOCUME~1\davidyao\Desktop\Lab3\assign33.c
+dbfunc e displaySystemStatus 0 fc
+dbsym l keysPressed A pi
+dbsym l proximity 8 i
+dbsym l temperature 6 I
+dbsym l temperature 7 c
+dbsym l speed 2 I
+dbsym l speed 3 c
+dbline FFFFFFFF 6
+dbline 3 6
+dbline 4 6
+dbline 5 11
+dbline 6 1C
+dbline 8 26
+dbline 9 63
+dbline B 63
+dbline C 69
+dbline E 6B
+dbline F 71
+dbline 11 73
+dbline 12 79
+dbline 14 7B
+dbline 15 81
+dbline 17 83
+dbline 18 89
+dbline 1A 8B
+dbline 1B 91
+dbline 1D 93
+dbline 1E 99
+dbline 20 9B
+dbline 21 A1
+dbline 24 A1
+dbline 25 A5
+dbline 27 AB
+dbline 28 B1
+dbline 29 BD
+dbline FFFFFFFE C0
+dbline 0 C5
+dbfunc e main C6 fV
+dbsym l keys FFFFFFFE i
+dbline FFFFFFFF CB
+dbline 2D CB
+dbline 35 CB
+dbline 36 D0
+dbline 38 E4
+dbline FFFFFFFE E5
+dbline 39 E5
+dbline 0 E8
+dbfile assign33.s
+dbfunc 0 ? 0 I
+dbline B 0
+dbline C 1
+dbline D 2
+dbline E 4
+dbline 16 6
+dbline 17 8
+dbline 18 9
+dbline 19 B
+dbline 1A E
+dbline 1D 11
+dbline 1E 13
+dbline 1F 14
+dbline 20 16
+dbline 21 19
+dbline 24 1C
+dbline 25 20
+dbline 26 23
+dbline 2A 26
+dbline 2B 28
+dbline 2C 2A
+dbline 2D 2C
+dbline 2E 2E
+dbline 2F 30
+dbline 30 32
+dbline 31 35
+dbline 32 37
+dbline 33 39
+dbline 34 3C
+dbline 35 3E
+dbline 36 40
+dbline 37 43
+dbline 38 45
+dbline 39 47
+dbline 3A 4A
+dbline 3B 4C
+dbline 3C 4E
+dbline 3D 51
+dbline 3E 53
+dbline 3F 55
+dbline 40 58
+dbline 41 5A
+dbline 42 5C
+dbline 43 5F
+dbline 44 61
+dbline 4C 63
+dbline 4D 66
+dbline 50 69
+dbline 55 6B
+dbline 56 6E
+dbline 59 71
+dbline 5E 73
+dbline 5F 76
+dbline 62 79
+dbline 67 7B
+dbline 68 7E
+dbline 6B 81
+dbline 70 83
+dbline 71 86
+dbline 74 89
+dbline 79 8B
+dbline 7A 8E
+dbline 7D 91
+dbline 82 93
+dbline 83 96
+dbline 86 99
+dbline 8B 9B
+dbline 8C 9E
+dbline 95 A1
+dbline 98 A5
+dbline 99 A8
+dbline 9E AB
+dbline 9F AE
+dbline A2 B1
+dbline A3 B5
+dbline A4 B7
+dbline A5 BA
+dbline A8 BD
+dbline AB C0
+dbline AC C2
+dbline AD C3
+dbline AF C5
+dbline BA C6
+dbline BB C7
+dbline BC C9
+dbline CC CB
+dbline CD CE
+dbline D0 D0
+dbline D1 D2
+dbline D2 D4
+dbline D3 D7
+dbline D4 D9
+dbline D5 DC
+dbline D6 DE
+dbline D7 E1
+dbline DB E4
+dbline E1 E5
+dbline E2 E7
+dbline E4 E8
+S _main Def00C6
+S _displaySystemStatus Def0000
+T 00 00 3B 34 B7 75 1B 9C E6 03 87 6C 80 CC 01 4B
+R 00 00 00 00 00 0E 00 00
+T 00 0E 16 00 00 E6 07 87 6C 80 CC 01 38 16 00 00
+R 00 00 00 00 02 03 00 00 00 0B 00 00 02 0E 00 00
+T 00 1C 18 02 08 80 CC 01 2C 16 00 00 EC 08 84 00
+R 00 00 00 00 00 07 00 00 02 0A 00 00
+T 00 2A C4 07 6C 1E 27 33 EC 1E 8C 00 01 27 34 EC
+R 00 00 00 00
+T 00 38 1E 8C 00 02 27 35 EC 1E 8C 00 03 27 36 EC
+R 00 00 00 00
+T 00 46 1E 8C 00 04 27 37 EC 1E 8C 00 05 27 38 EC
+R 00 00 00 00
+T 00 54 1E 8C 00 06 27 39 EC 1E 8C 00 07 27 3A 20
+R 00 00 00 00
+T 00 62 3E CC 01 2A 16 00 00 20 36 CC 01 28 16
+R 00 00 00 00 00 04 00 00 02 07 00 00 00 0C 00 00
+T 00 6F 00 00 20 2E CC 01 26 16 00 00 20 26 CC
+R 00 00 00 00 02 02 00 00 00 07 00 00 02 0A 00 00
+T 00 7C 01 24 16 00 00 20 1E CC 01 21 16
+R 00 00 00 00 00 02 00 00 02 05 00 00 00 0A 00 00
+T 00 87 00 00 20 16 CC 01 1E 16 00 00 20 0E CC
+R 00 00 00 00 02 02 00 00 00 07 00 00 02 0A 00 00
+T 00 94 01 1B 16 00 00 20 06 CC 01 18 16
+R 00 00 00 00 00 02 00 00 02 05 00 00 00 0A 00 00
+T 00 9F 00 00 0F 08 80 06 CC 00 FF 16 00 00 CC
+R 00 00 00 00 02 02 00 00 00 09 00 00 02 0C 00 00
+T 00 AC 00 FD 16 00 00 EC E3 00 0A 6C 80 CC 00 E9
+R 00 00 00 00 00 02 00 00 02 05 00 00 00 0E 00 00
+T 00 BA 16 00 00 CC 00 01 B7 57 30 1B 82 3D 34 B7
+R 00 00 00 00 02 03 00 00
+T 00 C8 75 1B 98 CC 49 2A 6C 1E 19 1E 6D 84 CC
+R 00 00 00 00
+T 00 D5 FF 0C 6C 82 CC 00 AB 6C 80 CC 00 B1 16
+R 00 00 00 00
+T 00 E2 00 00 3F B7 57 30 3D 4B 65 79 73 20 50 72
+R 00 00 00 00 00 02 00 00
+T 00 F0 65 73 73 65 64 3A 20 30 78 25 78 0A 00 0A
+R 00 00 00 00
+T 00 FE 00 20 2A 2A 20 4F 62 73 74 61 63 6C 65 73
+R 00 00 00 00
+T 01 0C 20 4E 65 61 72 62 79 21 20 2A 2A 00 53 57
+R 00 00 00 00
+T 01 1A 00 53 45 00 4E 57 00 4E 45 00 57 00 45 00
+R 00 00 00 00
+T 01 28 53 00 4E 00 50 72 6F 78 69 6D 69 74 79 3A
+R 00 00 00 00
+T 01 36 20 00 54 65 6D 70 65 72 61 74 75 72 65 3A
+R 00 00 00 00
+T 01 44 20 30 78 25 78 0A 00 53 70 65 65 64 3A 20
+R 00 00 00 00
+T 01 52 30 78 25 78 0A 00
+R 00 00 00 00

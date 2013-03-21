@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>Overview of Capabilities</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Overview of Capabilities</H1>
+
+<P>The Simulator is intended simulate most of the interfacing capabilities of the Motorola 68HC812A4
+microcontroller as installed in the Motorola M68HC12A4EVB evaluation board. Timing is simulated to allow
+estimating performance of the real system. The user interface allows accessing the various 68HC12 features,
+memories, and execution control. The basic, major capabilities are:</P>
+
+<UL>
+  <LI> 16K "External" RAM memory at locations $4000-$7FFF. Adjustable clock stretch.</LI>
+  <LI> 32K "External" pseudo-ROM memory at locations $8000-$FFFF. This memory can be altered via the
+simulator user interface, and loaded from S19 format files. Adjustable clock stretch.</LI>
+  <LI>  Internal memory (RAM and EEPROM) at their default locations, $800-$BFF for the RAM and $1000-$1FFF for the EEPROM. EEPROM can be programatically written.</LI>
+  <LI> Execution can be made to abort on invalid memory reference, invalid instruction execution, and un-handled
+interrupts.</LI>
+  <LI> 16MHz crystal clock assumed.</LI>
+  <LI> CPU12 fully implemented</LI>
+  <LI> Timer Module implemented, with a "Signal Generator" which can drive any of the inputs.</LI>
+  <LI> COP and RTI implemented</LI>
+  <LI> One SCI implemented, with "turbo mode" optional to allow an infinitely fast data rate.</LI>
+  <LI> ATD implemented</LI>
+  <LI> Peripheral chip selects (CS0 to CS3) implemented</LI>
+  <LI> Ports H and J implemented, including key interrupts</LI>
+  <LI> Output to ports H, J, T (timer), and peripheral chip selects can be logged to a file for analysis.</LI>
+</UL>
+
+<P>The simulator can also run in several modes: <A HREF="sim0023.html">wide expanded, requested, student,  single chip, and simulation of
+the 68HC912B32 part</A>.</P>
+
+</BODY>
+</HTML>

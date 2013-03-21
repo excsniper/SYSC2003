@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<META NAME="DATE" CONTENT="11/19/1998">
+<META NAME="Author" CONTENT="Tom Almy">
+<TITLE>Simulation Control</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Simulation Control</H1>
+
+<P><img src="simctl.gif" width="498" height="107" align=bottom ></P>
+
+<P>This section allows stepped or continuous execution of programs. </P>
+<H2>Step Button</H2>
+
+<P>Causes a single or fixed number of instructions to be executed. The user interface is inactive during execution. If in Wait state, a single instruction execution is considered to be 1 processor clock
+cycle; Use the Step Over button to execute to the completion of a WAI instruction. If in Stop state, stepping will have no effect unless an external interrupt is asserted and not masked.</P>
+<H2>Count Field</H2>
+
+<P>Specifies (in hexadecimal) the number of instructions to execute when the Step button is pressed. Execution may be halted prematurely if an exception condition occurs. <EM>Exception conditions are
+trapped memory errors, the BGND instruction, and any interrupts for which the interrupt vector has not been initialized (value is 0).</EM></P>
+<H2>Memory Errors</H2>
+
+<P>You can choose to ignore, log, or abort (exception) on attempts to access non-existing memory, write to read-only memory, or access unimplemented (or non-simulated) locations in the I/O
+Register bank.</P>
+<H2>State</H2>
+
+<P>Normally the state will be "Run", however it is "Wait" while executing a WAI instruction and "Stop" while executing a STOP instruction.</P>
+<H2>Step Over Button</H2>
+
+<P>When the current instruction is a BSR, JSR, or CALL then this button will execute the subroutine as in the "Go" button, and stop execution when the subroutine returns. If the current instruction is
+something else, then behaves like the "Step" button with a count of one; however in the situation where the processor is in "Wait" state, the Step Over button will cause time to pass until the
+processor leaves wait state. The Stop button can be used to cancel execution. Step Over is inactive while in Stopped state.</P>
+<H2>Go Button</H2>
+
+<P>Pressing this button causes the simulator to continuously execute instructions until the Stop button is pressed, a breakpoint is reached, an exception condition occurs, or the STOP instruction is
+executed. The Port T, external Interrupt and SCI inputs are active during continuous execution, but only the SCI output is updated during continuous execution. (However, see <EM>Display Updates</EM>,
+below.) The memory display can be updated manually (the Show button) during continuous execution. The Go button is inactive while in Stopped state.</P>
+<H2>Stop Button</H2>
+
+<P>Stops continuous execution. </P>
+<H2>Display Updates</H2>
+
+<P>When this box is checked, the display will update every 101 68HC12 instructions executed. Since this reduces execution speed, it is off by default.</P>
+<H2>View Breakpoints</H2>
+
+<P><img src="breakpts.gif" width="194" height="140" align=bottom ></P>
+
+<P>A breakpoint is a memory location at which continuous execution (initiated with the  Go button) will stop. You can add as many breakpoints as you wish. Select a breakpoint and press Delete to
+remove it, or use Delete All to remove all breakpoints.</P>
+<H2>Next Instruction</H2>
+
+<P>Shows a disassembly of the next instruction to be executed. Operands can optionally be viewed in decimal.</P>
+
+<P>While in Wait state, the next instruction is not known, and the instruction displayed (as well as the value of the PC register) refer to the WAI instruction. While in Stopped state, the following
+instruction is displayed, as it <EM>might</EM> be the next one to execute.</P>
+
+</BODY>
+</HTML>

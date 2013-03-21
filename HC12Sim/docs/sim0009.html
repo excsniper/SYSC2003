@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>Clock and Timer</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Clock and Timer</H1>
+
+<P>Represents the interface port T, and displays execution time and current TCNT value. Display is not
+updated during execution, however the PTn check boxes update the Port T input immediately, and will be
+seen by an executing program. </P>
+
+<P><img src="clktim.gif" width="319" height="200" align=right ></P>
+
+<P>The fields:</P>
+
+<UL>
+  <LI>Time give the execution time since the last file-menu reset.</LI>
+  <LI>The "0" button resets the indicated Time to zero.</LI>
+  <LI>TCNT is the current value in TCNT</LI>
+  <LI>Log Output will cause any changes in Port T output to be
+placed in the log.</LI>
+  <LI>Port T has check boxes for port T input (which are greyed if the
+pin is configured for output) and displays for the port T outputs. "Z" means the pin is not being driven.</LI>
+</OL>
+
+<P>The log entries are in the format:</P>
+<PRE>PORTT,12300,49,31</PRE>
+
+<P>Where PORTT indicates a Port T event, <EM>12300</EM> is the time (in P clocks), <EM>49</EM> is the Port T value in decimal,
+and <EM>31</EM> is the Port T value in hexadecimal.</P>
+
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+<BR WP="BR1"><BR WP="BR2">
+</BODY>
+</HTML>

@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<META NAME="DATE" CONTENT="11/19/1998">
+<META NAME="Author" CONTENT="Tom Almy">
+<TITLE>File Menu</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>File Menu</H1>
+<H2>Load</H2>
+
+<P>Brings up a dialog to select and load Motorola S19 format files. </P>
+<H2>Reset</H2>
+
+<P>Resets the "processor" to power-up state. Only memory affected is the internal RAM, which is initialized to repeated copies of $BE
+$AD $FA $CE to represent the unknown power up state. (Note that if the simulator is run in Student Mode or Requested Mode, the
+RAM memory is not initialized.) This command should be performed after loading the S19 file(s).</P>
+<H2>Log</H2>
+
+<P>By default, the simulator logs certain actions to the console. This menu item brings up a dialog to select a file to store all logged
+actions. If an existing file is selected, its contents is first erased.</P>
+<H2>Use Console</H2>
+
+<P>Restores logging to the console. Note that the "console" is either the command window if JRE is used, or is the "Java Console" if a
+browser is used to start the simulator. You must enable the Java Console in order to see it. This is done from the "Java Plug-in
+Control Panel" on the Windows Start Menu.</P>
+<H2>Log CSW</H2>
+
+<P>This check-able menu item causes writes to Chip Select enabled locations to be logged. The log entries show the action (such as
+"CSW0"), time in internal E-clocks, and both the decimal and hexadecimal locations and values.</P>
+<H2>Exit</H2>
+
+<P>Exit the simulator. Nothing is saved.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,263 @@
+WARNING: EXTCODE CODE AREA DO NOT CONTAIN RELOCATED ADDRESSES.
+THIS WILL BE REMEDIED IN A LATER RELEASE.
+                        .module assign33.c
+                        .area text
+--- 0000                   .dbfile C:\DOCUME~1\davidyao\Desktop\Lab3\assign33.c
+--- 0000                   .dbfunc e displaySystemStatus _displaySystemStatus fc
+--- 0000           ;          ?temp -> -2,x
+--- 0000           ;    keysPressed -> 10,x
+--- 0000           ;      proximity -> 8,x
+--- 0000           ;    temperature -> 7,x
+--- 0000           ;          speed -> 3,x
+ 402A            _displaySystemStatus::
+ 402A  3B                pshd
+ 402B  34                pshx
+ 402C  B775              tfr s,x
+ 402E  1B9C              leas -4,sp
+ 4030                    .dbline -1
+ 4030                    .dbline 3
+ 4030            ; 
+ 4030            ; char displaySystemStatus(char speed, char temperature, unsigned int proximity, unsigned int *keysPressed)
+ 4030            ; {
+ 4030                    .dbline 4
+ 4030            ;        printf("Speed: 0x%x\n", speed);
+ 4030  E603              ldab 3,x
+ 4032  87                clra
+ 4033  6C80              std 0,sp
+ 4035  CC4175            ldd #L2
+ 4038  1645D2            jsr _printf
+ 403B                    .dbline 5
+ 403B            ;        printf("Temperature: 0x%x\n", temperature);
+ 403B  E607              ldab 7,x
+ 403D  87                clra
+ 403E  6C80              std 0,sp
+ 4040  CC4162            ldd #L3
+ 4043  1645D2            jsr _printf
+ 4046                    .dbline 6
+ 4046            ;        printf("Proximity: ", proximity);
+ 4046  18020880          movw 8,x,0,sp
+ 404A  CC4156            ldd #L4
+ 404D  1645D2            jsr _printf
+ 4050                    .dbline 8
+ 4050            ; 
+ 4050            ;        switch(proximity & 0x0007)
+ 4050  EC08              ldd 8,x
+ 4052  8400              anda #0
+ 4054  C407              andb #7
+ 4056  6C1E              std -2,x
+ 4058  2733              beq L8
+ 405A  EC1E              ldd -2,x
+ 405C  8C0001            cpd #1
+ 405F  2734              beq L10
+ 4061  EC1E              ldd -2,x
+ 4063  8C0002            cpd #2
+ 4066  2735              beq L12
+ 4068  EC1E              ldd -2,x
+ 406A  8C0003            cpd #3
+ 406D  2736              beq L14
+ 406F  EC1E              ldd -2,x
+ 4071  8C0004            cpd #4
+ 4074  2737              beq L16
+ 4076  EC1E              ldd -2,x
+ 4078  8C0005            cpd #5
+ 407B  2738              beq L18
+ 407D  EC1E              ldd -2,x
+ 407F  8C0006            cpd #6
+ 4082  2739              beq L20
+ 4084  EC1E              ldd -2,x
+ 4086  8C0007            cpd #7
+ 4089  273A              beq L22
+ 408B  203E              bra L5
+ 408D            X0:
+ 408D                    .dbline 9
+ 408D            ;        {
+ 408D            L8:
+ 408D                    .dbline 11
+ 408D            ;                       case 0:
+ 408D            ;                                printf("N");
+ 408D  CC4154            ldd #L9
+ 4090  1645D2            jsr _printf
+ 4093                    .dbline 12
+ 4093            ;                                break;
+ 4093  2036              bra L6
+ 4095            L10:
+ 4095                    .dbline 14
+ 4095            ;                       case 1:
+ 4095            ;                                printf("S");
+ 4095  CC4152            ldd #L11
+ 4098  1645D2            jsr _printf
+ 409B                    .dbline 15
+ 409B            ;                                break;
+ 409B  202E              bra L6
+ 409D            L12:
+ 409D                    .dbline 17
+ 409D            ;                       case 2:
+ 409D            ;                                printf("E");
+ 409D  CC4150            ldd #L13
+ 40A0  1645D2            jsr _printf
+ 40A3                    .dbline 18
+ 40A3            ;                                break;
+ 40A3  2026              bra L6
+ 40A5            L14:
+ 40A5                    .dbline 20
+ 40A5            ;                       case 3:
+ 40A5            ;                                printf("W");
+ 40A5  CC414E            ldd #L15
+ 40A8  1645D2            jsr _printf
+ 40AB                    .dbline 21
+ 40AB            ;                                break;
+ 40AB  201E              bra L6
+ 40AD            L16:
+ 40AD                    .dbline 23
+ 40AD            ;                       case 4:
+ 40AD            ;                                printf("NE");
+ 40AD  CC414B            ldd #L17
+ 40B0  1645D2            jsr _printf
+ 40B3                    .dbline 24
+ 40B3            ;                                break;
+ 40B3  2016              bra L6
+ 40B5            L18:
+ 40B5                    .dbline 26
+ 40B5            ;                       case 5:
+ 40B5            ;                                printf("NW");
+ 40B5  CC4148            ldd #L19
+ 40B8  1645D2            jsr _printf
+ 40BB                    .dbline 27
+ 40BB            ;                                break;
+ 40BB  200E              bra L6
+ 40BD            L20:
+ 40BD                    .dbline 29
+ 40BD            ;                       case 6:
+ 40BD            ;                                printf("SE");
+ 40BD  CC4145            ldd #L21
+ 40C0  1645D2            jsr _printf
+ 40C3                    .dbline 30
+ 40C3            ;                                break;
+ 40C3  2006              bra L6
+ 40C5            L22:
+ 40C5                    .dbline 32
+ 40C5            ;                       case 7:
+ 40C5            ;                                printf("SW");
+ 40C5  CC4142            ldd #L23
+ 40C8  1645D2            jsr _printf
+ 40CB                    .dbline 33
+ 40CB            ;                                break;                                                                                                                                                                                          
+ 40CB            L5:
+ 40CB            L6:
+ 40CB                    .dbline 36
+ 40CB            ;               }
+ 40CB            ;        
+ 40CB            ;        if(proximity & 0x8000)
+ 40CB  0F088006          brclr 8,x,#128,L24
+ 40CF                    .dbline 37
+ 40CF            ;                printf(" ** Obstacles Nearby! **");
+ 40CF  CC4129            ldd #L26
+ 40D2  1645D2            jsr _printf
+ 40D5            L24:
+ 40D5                    .dbline 39
+ 40D5            ;               
+ 40D5            ;        printf("\n");
+ 40D5  CC4127            ldd #L27
+ 40D8  1645D2            jsr _printf
+ 40DB                    .dbline 40
+ 40DB            ;        printf("Keys Pressed: 0x%x\n", *keysPressed);
+ 40DB  ECE3000A          ldd [10,x]
+ 40DF  6C80              std 0,sp
+ 40E1  CC4113            ldd #L28
+ 40E4  1645D2            jsr _printf
+ 40E7                    .dbline 41
+ 40E7            ;        return 1;
+ 40E7  CC0001            ldd #1
+ 40EA                    .dbline -2
+ 40EA            L1:
+ 40EA  B757              tfr x,s
+ 40EC  30                pulx
+ 40ED  1B82              leas 2,sp
+ 40EF                    .dbline 0 ; func end
+ 40EF  3D                rts
+ 40F0                    .dbsym l keysPressed 10 pi
+ 40F0                    .dbsym l proximity 8 i
+ 40F0                    .dbsym l temperature 6 I
+ 40F0                    .dbsym l temperature 7 c
+ 40F0                    .dbsym l speed 2 I
+ 40F0                    .dbsym l speed 3 c
+ 40F0                    .dbend
+ 40F0                    .dbfunc e main _main fV
+ 40F0            ;           keys -> -2,x
+ 40F0            _main::
+ 40F0  34                pshx
+ 40F1  B775              tfr s,x
+ 40F3  1B98              leas -8,sp
+ 40F5                    .dbline -1
+ 40F5                    .dbline 45
+ 40F5            ; }
+ 40F5            ; 
+ 40F5            ; void main()
+ 40F5            ; {
+ 40F5                    .dbline 53
+ 40F5            ;        /*
+ 40F5            ;        Speed: 10110001b (177)
+ 40F5            ;        Temperature: 10101011b (171)
+ 40F5            ;        Proximity: 1111111100001100b (65292)
+ 40F5            ;        Keys Pressed: 100100100101010b (18730)
+ 40F5            ;        */
+ 40F5            ; 
+ 40F5            ;        unsigned int keys = 0x492A;
+ 40F5  CC492A            ldd #18730
+ 40F8  6C1E              std -2,x
+ 40FA                    .dbline 54
+ 40FA            ;        displaySystemStatus(0xB1, 0xAB, 0xFF0C, &keys);
+ 40FA  191E              leay -2,x
+ 40FC  6D84              sty 4,sp
+ 40FE  CCFF0C            ldd #0xff0c
+ 4101  6C82              std 2,sp
+ 4103  CC00AB            ldd #171
+ 4106  6C80              std 0,sp
+ 4108  CC00B1            ldd #177
+ 410B  16402A            jsr _displaySystemStatus
+ 410E                    .dbline 56
+ 410E            ;        
+ 410E            ;        asm("SWI"); 
+ 410E  3F                        SWI
+ 410F            
+ 410F                    .dbline -2
+ 410F                    .dbline 57
+ 410F            ; }
+ 410F            L29:
+ 410F  B757              tfr x,s
+ 4111  30                pulx
+ 4112                    .dbline 0 ; func end
+ 4112  3D                rts
+ 4113                    .dbsym l keys -2 i
+ 4113                    .dbend
+ 4113            L28:
+ 4113  4B65797320507265737365643A203078  .byte 'K,'e,'y,'s,32,'P,'r,'e,'s,'s,'e,'d,58,32,48,'x
+ 4123  25780A00          .byte 37,'x,10,0
+ 4127            L27:
+ 4127  0A00              .byte 10,0
+ 4129            L26:
+ 4129  202A2A204F62737461636C6573204E65  .byte 32,42,42,32,'O,'b,'s,'t,'a,'c,'l,'e,'s,32,'N,'e
+ 4139  6172627921202A2A00        .byte 'a,'r,'b,'y,33,32,42,42,0
+ 4142            L23:
+ 4142  535700            .byte 'S,'W,0
+ 4145            L21:
+ 4145  534500            .byte 'S,'E,0
+ 4148            L19:
+ 4148  4E5700            .byte 'N,'W,0
+ 414B            L17:
+ 414B  4E4500            .byte 'N,'E,0
+ 414E            L15:
+ 414E  5700              .byte 'W,0
+ 4150            L13:
+ 4150  4500              .byte 'E,0
+ 4152            L11:
+ 4152  5300              .byte 'S,0
+ 4154            L9:
+ 4154  4E00              .byte 'N,0
+ 4156            L4:
+ 4156  50726F78696D6974793A2000  .byte 'P,'r,'o,'x,'i,'m,'i,'t,'y,58,32,0
+ 4162            L3:
+ 4162  54656D70657261747572653A20307825  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,32,48,'x,37
+ 4172  780A00            .byte 'x,10,0
+ 4175            L2:
+ 4175  53706565643A20307825780A00        .byte 'S,'p,'e,'e,'d,58,32,48,'x,37,'x,10,0

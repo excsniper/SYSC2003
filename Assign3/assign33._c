@@ -1,0 +1,57 @@
+
+char displaySystemStatus(char speed, char temperature, unsigned int proximity, unsigned int *keysPressed)
+{
+ 	 printf("Speed: 0x%x\n", speed);
+	 printf("Temperature: 0x%x\n", temperature);
+	 printf("Proximity: ", proximity);
+
+	 switch(proximity & 0x0007)
+	 {
+	  		case 0:
+				 printf("N");
+				 break;
+	  		case 1:
+				 printf("S");
+				 break;
+	  		case 2:
+				 printf("E");
+				 break;
+	  		case 3:
+				 printf("W");
+				 break;
+	  		case 4:
+				 printf("NE");
+				 break;
+	  		case 5:
+				 printf("NW");
+				 break;
+	  		case 6:
+				 printf("SE");
+				 break;
+	  		case 7:
+				 printf("SW");
+				 break;				 				 				 				 				 				 
+		}
+	 
+	 if(proximity & 0x8000)
+	 	 printf(" ** Obstacles Nearby! **");
+		
+	 printf("\n");
+	 printf("Keys Pressed: 0x%x\n", *keysPressed);
+	 return 1;
+}
+
+void main()
+{
+ 	 /*
+ 	 Speed: 10110001b (0xB1)
+	 Temperature: 10101011b (0xAB)
+	 Proximity: 1111111100001100b (0xFF0C)
+	 Keys Pressed: 100100100101010b (0x492A)
+	 */
+
+ 	 unsigned int keys = 0x492A;
+ 	 displaySystemStatus(0xB1, 0xAB, 0xFF0C, &keys);
+	 
+	 asm("SWI"); 
+}

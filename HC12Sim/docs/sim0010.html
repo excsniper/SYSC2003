@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>Interrupts</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Interrupts</H1>
+
+<P><img src="ints.gif" width="73" height="130" align=right >Check boxes are provided for the three external interrupt sources, RESET, XIRQ, and IRQ.
+When the interrupt is handled, the check is cleared. Boxes can be checked while simulations are
+running via "Go". The checks will be cleared as soon as the interrupt is request is serviced, even
+while running via "Go".</P>
+
+<P>Then value given as <EM>pending</EM> are the number of interrupt sources that are requesting service.</P>
+
+<P>Note that if an interrupt request is serviced and there is no handler (interrupt vector is $0), the an error is
+assumed and the simulation stops.</P>
+
+</BODY>
+</HTML>

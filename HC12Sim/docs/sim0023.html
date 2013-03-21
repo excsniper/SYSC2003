@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>Operating Modes and the Command Line</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Operating Modes and the Command Line</H1>
+
+<P>Operating modes can be specified on the command line when starting the simulator. </P>
+<H2>Normal Expanded Wide</H2>
+
+<P>This is the default operating mode, which is the default operation of the Motorola EVB. It is typically necessary
+to do some initialization when using this mode, usually by loading DBUG12.S19 and running its startup code.</P>
+<H2>Requested Mode</H2>
+
+<P>So named because it was requested. This is identical to the default mode except the internal RAM memory is not
+initialized by power on reset (the File...Reset menu item). Apparently some people want to put programs in the
+internal RAM memory instead of external RAM or ROM. To run in the requested mode, add "-r" to the end of
+the command line but before any .S19 files.</P>
+<H2>Student Mode</H2>
+
+<P>This is Normal Expanded Wide with several important changes: the COP system is disabled,  the reset vector at
+$FFFE is initialized to $4000, and the clock stretch for the "external" memory is set at 1 E-Clock. The external
+memory access is enabled (actually it is in the default mode, but it might not be in the future). The internal RAM
+memory is not initialized by power on reset (the File...Reset menu item) in student mode. To run in student
+mode, add "-s" to the end of the command line but before any .S19 files.</P>
+
+<h2>64K RAM Mode</h2>
+<p>This is Normal Expanded Wide with 64K of external RAM attached. It doesn't represent the
+Motorola EVB, but is probably the easiest mode to use. To enable this mode, add "-m" to the end 
+of the command line but before any .S19 files.</p>
+
+<H2>Normal Single Chip Mode</H2>
+
+<P>The EEPROM is relocated to $F000-$FFFF and the external memory is no longer accessible. This is equivalent
+to changing the MODA and MODB header jumpers on the Motorola EVB to place it in Normal Single Chip
+mode. To run in normal single chip mode, add "-c" to the end of the command line but before any .S19 files.
+Note that all modes are mutually exclusive.</P>
+<H2>Expanded Narrow Mode</H2>
+
+<P>In this mode, the chip is configured for an 8 bit data bus. This effects instruction timing. To run in Expanded
+Narrow mode, add "-n" to the end of the command line but before any .S19 files.</P>
+<H2>68HC912B32 Mode</H2>
+
+<P>In this mode the 68HC912B32 is simulated running in single chip mode. The PWM is not available and all other
+features are available to the extent they are in the other modes (ATD, SCI are available, SPI is not). The Flash
+ROM from locations $8000-$FFFF is not loadable programmatically, but can be loaded from S19 files or through
+the user interface. To run in 68HC912B32 mode, add "-b" to the end of the command line but before any .S19
+files.</P>
+
+<BR WP="BR1"><BR WP="BR2">
+<P><HR>
+</P>
+After any mode commands on the command line, .S19 format files can be listed. If the file name extension
+is missing, ".S19" will be appended to the file name automatically. These files will be loaded
+automatically at startup. If any files are listed, then a power-up reset is performed. 
+
+<P>For instance,</P>
+<PRE>jre -cp simhc12.jar SimHC12 -s problem1.s19 dbug12.s19</PRE>
+
+<P>will start the simulator in Student Mode,  load the files <EM>problem1.s19</EM> and <EM>dbug12.s19</EM>, then perform a power-up
+reset.</P>
+
+<P><HR>
+Note that the documentation directory (folder) is expected to be in the folder that the simulator is run in. An
+addition option "-p<EM>path"</EM> can be used to specify the path to the directory containing the documentation files. The
+path can either be absolute (starting at the root directory) or relative to the current directory.</P>
+
+</BODY>
+</HTML>

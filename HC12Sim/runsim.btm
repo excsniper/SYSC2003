@@ -1,0 +1,1 @@
+jre -cp SimHC12.jar SimHC12 %$

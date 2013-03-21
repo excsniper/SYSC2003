@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>Parallel Ports</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>Parallel Ports</H1>
+
+<P>These ports have check boxes for pins programmed as inputs and display boxes for pins programmed as outputs. Outputs are
+not updated while simulations are running, however inputs are active when simulations are running via the "Go" or "Step
+Over" buttons.</P>
+<br>
+<img src="portjh.gif" width="437" height="139" align=right >
+<p>The ports displayed depend on the processor operating mode, with ports J and H being
+generally available, port D added for Narrow Memory mode, and ports A and B additionally
+added for Single Chip mode. In the case of the 68HC912B32, only ports A and B are provided.</p>
+<p>When the Log Changes box is checked, any changes to the outputs
+are logged, giving their time (in E/P clocks) and new value. The
+logging line looks like this:</P>
+<PRE>PORTH,10022,34,22</PRE>
+
+<P>Where <EM>PORTH</EM> is the event name (Port H output changed), <EM>10022</EM>
+is the time, <EM>34 </EM>is the value in decimal, and <EM>22</EM> is the value in
+hexadecimal.</P>
+
+<P>When the key wakeup interrupt feature is used, the interrupts are edge sensitive and won't be captured until the next P-clock.
+Key wakeup on port D uses the same interrupt as the External interrupt pin.</P>
+
+</BODY>
+</HTML>

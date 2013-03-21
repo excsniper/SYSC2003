@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>D-BUG12 Emulation</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1>D-BUG12 Emulation</H1>
+
+<P>In order to allow the same program to run in the D-BUG12 environment and in the simulator, a D-BUG12 emulator,
+<A HREF="../../sources/dbug12.asm">DBUG12.ASM</A>, was written. This emulator has the following functionality:</P>
+
+<UL>
+  <LI>Handles the reset vector (at $FFFE-FFFF)</LI>
+  <LI>Implements the SetUserVector function</LI>
+  <LI>Allows SWI to end program execution</LI>
+  <LI>"Traps" on all interrupt vectors that are not set by the user.</LI>
+</UL>
+
+<P>The emulator also disables the COP timer, enables serial port 0 to 9600 BPS, and configures the clock stretch.</P>
+
+<P>Naturally, a full D-BUG12 emulation is not necessary, because the 68HC12 simulator has most of the capabilities of
+the D-BUG12 user interface. The adventuresome can install the full DBUG12 program into the simulator and run it --
+yes it does work!</P>
+<H2>Instructions For Use</H2>
+
+<OL>
+  <LI>Assemble DBUG12.ASM into DBUG12.S19, if not already done.</LI>
+  <LI>Start the simulator.</LI>
+  <LI>Load your program you want to simulate and DBUG12.S19.</LI>
+  <LI>Do a Reset, then press the "Go" button. Execution will stop at a BGND instruction.</LI>
+  <LI>Set the PC register to the address of the start of your program. If your program starts at $4000, this step is not
+necessary.</LI>
+  <LI>Use the simulator normally to step or run your program.</LI>
+  <LI>If execution stops with a D-BUG12 BGND instruction, with the next instruction displayed being a "BRA", register
+X contains the vector number of the interrupt that occurred. For instance $1B = 27, which would be an SWI
+instruction interrupt - the normal way of terminating a program under D-BUG12.</LI>
+  <LI>If execution stops with a D-BUG12 BGND instruction where the next instruction displayed being a "RTS", this is
+an un-implemented D-BUG12 routine. Feel free to write it for extra credit.</LI>
+</OL>
+
+</BODY>
+</HTML>

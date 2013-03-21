@@ -1,0 +1,261 @@
+                        .module assign33.c
+                        .area text
+ 0000                   .dbfile C:\DOCUME~1\davidyao\Desktop\Lab3\assign33.c
+ 0000                   .dbfunc e displaySystemStatus _displaySystemStatus fc
+ 0000           ;          ?temp -> -2,x
+ 0000           ;    keysPressed -> 10,x
+ 0000           ;      proximity -> 8,x
+ 0000           ;    temperature -> 7,x
+ 0000           ;          speed -> 3,x
+ 0000           _displaySystemStatus::
+ 0000 3B                pshd
+ 0001 34                pshx
+ 0002 B775              tfr s,x
+ 0004 1B9C              leas -4,sp
+ 0006                   .dbline -1
+ 0006                   .dbline 3
+ 0006           ; 
+ 0006           ; char displaySystemStatus(char speed, char temperature, unsigned int proximity, unsigned int *keysPressed)
+ 0006           ; {
+ 0006                   .dbline 4
+ 0006           ;        printf("Speed: 0x%x\n", speed);
+ 0006 E603              ldab 3,x
+ 0008 87                clra
+ 0009 6C80              std 0,sp
+ 000B CC014B            ldd #L2
+ 000E 160000            jsr _printf
+ 0011                   .dbline 5
+ 0011           ;        printf("Temperature: 0x%x\n", temperature);
+ 0011 E607              ldab 7,x
+ 0013 87                clra
+ 0014 6C80              std 0,sp
+ 0016 CC0138            ldd #L3
+ 0019 160000            jsr _printf
+ 001C                   .dbline 6
+ 001C           ;        printf("Proximity: ", proximity);
+ 001C 18020880          movw 8,x,0,sp
+ 0020 CC012C            ldd #L4
+ 0023 160000            jsr _printf
+ 0026                   .dbline 8
+ 0026           ; 
+ 0026           ;        switch(proximity & 0x0007)
+ 0026 EC08              ldd 8,x
+ 0028 8400              anda #0
+ 002A C407              andb #7
+ 002C 6C1E              std -2,x
+ 002E 2733              beq L8
+ 0030 EC1E              ldd -2,x
+ 0032 8C0001            cpd #1
+ 0035 2734              beq L10
+ 0037 EC1E              ldd -2,x
+ 0039 8C0002            cpd #2
+ 003C 2735              beq L12
+ 003E EC1E              ldd -2,x
+ 0040 8C0003            cpd #3
+ 0043 2736              beq L14
+ 0045 EC1E              ldd -2,x
+ 0047 8C0004            cpd #4
+ 004A 2737              beq L16
+ 004C EC1E              ldd -2,x
+ 004E 8C0005            cpd #5
+ 0051 2738              beq L18
+ 0053 EC1E              ldd -2,x
+ 0055 8C0006            cpd #6
+ 0058 2739              beq L20
+ 005A EC1E              ldd -2,x
+ 005C 8C0007            cpd #7
+ 005F 273A              beq L22
+ 0061 203E              bra L5
+ 0063           X0:
+ 0063                   .dbline 9
+ 0063           ;        {
+ 0063           L8:
+ 0063                   .dbline 11
+ 0063           ;                       case 0:
+ 0063           ;                                printf("N");
+ 0063 CC012A            ldd #L9
+ 0066 160000            jsr _printf
+ 0069                   .dbline 12
+ 0069           ;                                break;
+ 0069 2036              bra L6
+ 006B           L10:
+ 006B                   .dbline 14
+ 006B           ;                       case 1:
+ 006B           ;                                printf("S");
+ 006B CC0128            ldd #L11
+ 006E 160000            jsr _printf
+ 0071                   .dbline 15
+ 0071           ;                                break;
+ 0071 202E              bra L6
+ 0073           L12:
+ 0073                   .dbline 17
+ 0073           ;                       case 2:
+ 0073           ;                                printf("E");
+ 0073 CC0126            ldd #L13
+ 0076 160000            jsr _printf
+ 0079                   .dbline 18
+ 0079           ;                                break;
+ 0079 2026              bra L6
+ 007B           L14:
+ 007B                   .dbline 20
+ 007B           ;                       case 3:
+ 007B           ;                                printf("W");
+ 007B CC0124            ldd #L15
+ 007E 160000            jsr _printf
+ 0081                   .dbline 21
+ 0081           ;                                break;
+ 0081 201E              bra L6
+ 0083           L16:
+ 0083                   .dbline 23
+ 0083           ;                       case 4:
+ 0083           ;                                printf("NE");
+ 0083 CC0121            ldd #L17
+ 0086 160000            jsr _printf
+ 0089                   .dbline 24
+ 0089           ;                                break;
+ 0089 2016              bra L6
+ 008B           L18:
+ 008B                   .dbline 26
+ 008B           ;                       case 5:
+ 008B           ;                                printf("NW");
+ 008B CC011E            ldd #L19
+ 008E 160000            jsr _printf
+ 0091                   .dbline 27
+ 0091           ;                                break;
+ 0091 200E              bra L6
+ 0093           L20:
+ 0093                   .dbline 29
+ 0093           ;                       case 6:
+ 0093           ;                                printf("SE");
+ 0093 CC011B            ldd #L21
+ 0096 160000            jsr _printf
+ 0099                   .dbline 30
+ 0099           ;                                break;
+ 0099 2006              bra L6
+ 009B           L22:
+ 009B                   .dbline 32
+ 009B           ;                       case 7:
+ 009B           ;                                printf("SW");
+ 009B CC0118            ldd #L23
+ 009E 160000            jsr _printf
+ 00A1                   .dbline 33
+ 00A1           ;                                break;                                                                                                                                                                                          
+ 00A1           L5:
+ 00A1           L6:
+ 00A1                   .dbline 36
+ 00A1           ;               }
+ 00A1           ;        
+ 00A1           ;        if(proximity & 0x8000)
+ 00A1 0F088006          brclr 8,x,#128,L24
+ 00A5                   .dbline 37
+ 00A5           ;                printf(" ** Obstacles Nearby! **");
+ 00A5 CC00FF            ldd #L26
+ 00A8 160000            jsr _printf
+ 00AB           L24:
+ 00AB                   .dbline 39
+ 00AB           ;               
+ 00AB           ;        printf("\n");
+ 00AB CC00FD            ldd #L27
+ 00AE 160000            jsr _printf
+ 00B1                   .dbline 40
+ 00B1           ;        printf("Keys Pressed: 0x%x\n", *keysPressed);
+ 00B1 ECE3000A          ldd [10,x]
+ 00B5 6C80              std 0,sp
+ 00B7 CC00E9            ldd #L28
+ 00BA 160000            jsr _printf
+ 00BD                   .dbline 41
+ 00BD           ;        return 1;
+ 00BD CC0001            ldd #1
+ 00C0                   .dbline -2
+ 00C0           L1:
+ 00C0 B757              tfr x,s
+ 00C2 30                pulx
+ 00C3 1B82              leas 2,sp
+ 00C5                   .dbline 0 ; func end
+ 00C5 3D                rts
+ 00C6                   .dbsym l keysPressed 10 pi
+ 00C6                   .dbsym l proximity 8 i
+ 00C6                   .dbsym l temperature 6 I
+ 00C6                   .dbsym l temperature 7 c
+ 00C6                   .dbsym l speed 2 I
+ 00C6                   .dbsym l speed 3 c
+ 00C6                   .dbend
+ 00C6                   .dbfunc e main _main fV
+ 00C6           ;           keys -> -2,x
+ 00C6           _main::
+ 00C6 34                pshx
+ 00C7 B775              tfr s,x
+ 00C9 1B98              leas -8,sp
+ 00CB                   .dbline -1
+ 00CB                   .dbline 45
+ 00CB           ; }
+ 00CB           ; 
+ 00CB           ; void main()
+ 00CB           ; {
+ 00CB                   .dbline 53
+ 00CB           ;        /*
+ 00CB           ;        Speed: 10110001b (177)
+ 00CB           ;        Temperature: 10101011b (171)
+ 00CB           ;        Proximity: 1111111100001100b (65292)
+ 00CB           ;        Keys Pressed: 100100100101010b (18730)
+ 00CB           ;        */
+ 00CB           ; 
+ 00CB           ;        unsigned int keys = 0x492A;
+ 00CB CC492A            ldd #18730
+ 00CE 6C1E              std -2,x
+ 00D0                   .dbline 54
+ 00D0           ;        displaySystemStatus(0xB1, 0xAB, 0xFF0C, &keys);
+ 00D0 191E              leay -2,x
+ 00D2 6D84              sty 4,sp
+ 00D4 CCFF0C            ldd #0xff0c
+ 00D7 6C82              std 2,sp
+ 00D9 CC00AB            ldd #171
+ 00DC 6C80              std 0,sp
+ 00DE CC00B1            ldd #177
+ 00E1 160000            jsr _displaySystemStatus
+ 00E4                   .dbline 56
+ 00E4           ;        
+ 00E4           ;        asm("SWI"); 
+ 00E4 3F                        SWI
+ 00E5           
+ 00E5                   .dbline -2
+ 00E5                   .dbline 57
+ 00E5           ; }
+ 00E5           L29:
+ 00E5 B757              tfr x,s
+ 00E7 30                pulx
+ 00E8                   .dbline 0 ; func end
+ 00E8 3D                rts
+ 00E9                   .dbsym l keys -2 i
+ 00E9                   .dbend
+ 00E9           L28:
+ 00E9 4B65797320507265737365643A203078  .byte 'K,'e,'y,'s,32,'P,'r,'e,'s,'s,'e,'d,58,32,48,'x
+ 00F9 25780A00          .byte 37,'x,10,0
+ 00FD           L27:
+ 00FD 0A00              .byte 10,0
+ 00FF           L26:
+ 00FF 202A2A204F62737461636C6573204E65  .byte 32,42,42,32,'O,'b,'s,'t,'a,'c,'l,'e,'s,32,'N,'e
+ 010F 6172627921202A2A00        .byte 'a,'r,'b,'y,33,32,42,42,0
+ 0118           L23:
+ 0118 535700            .byte 'S,'W,0
+ 011B           L21:
+ 011B 534500            .byte 'S,'E,0
+ 011E           L19:
+ 011E 4E5700            .byte 'N,'W,0
+ 0121           L17:
+ 0121 4E4500            .byte 'N,'E,0
+ 0124           L15:
+ 0124 5700              .byte 'W,0
+ 0126           L13:
+ 0126 4500              .byte 'E,0
+ 0128           L11:
+ 0128 5300              .byte 'S,0
+ 012A           L9:
+ 012A 4E00              .byte 'N,0
+ 012C           L4:
+ 012C 50726F78696D6974793A2000  .byte 'P,'r,'o,'x,'i,'m,'i,'t,'y,58,32,0
+ 0138           L3:
+ 0138 54656D70657261747572653A20307825  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,32,48,'x,37
+ 0148 780A00            .byte 'x,10,0
+ 014B           L2:
+ 014B 53706565643A20307825780A00        .byte 'S,'p,'e,'e,'d,58,32,48,'x,37,'x,10,0

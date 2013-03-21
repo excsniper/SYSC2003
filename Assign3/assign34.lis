@@ -1,0 +1,277 @@
+                        .module assign34.c
+                        .area text
+ 0000                   .dbfile C:\DOCUME~1\davidyao\Desktop\Lab3\assign34.c
+ 0000                   .dbfunc e collision_detection _collision_detection fc
+ 0000           ;          ?temp -> -2,x
+ 0000           ;      proximity -> 6,x
+ 0000           ;          speed -> 2,x
+ 0000           _collision_detection::
+ 0000 3B                pshd
+ 0001 34                pshx
+ 0002 B775              tfr s,x
+ 0004 1B9E              leas -2,sp
+ 0006                   .dbline -1
+ 0006                   .dbline 3
+ 0006           ; 
+ 0006           ; char collision_detection(char *speed, unsigned int *proximity)
+ 0006           ; {
+ 0006                   .dbline 5
+ 0006           ;               
+ 0006           ;        if ( !(*proximity & 0x8000) )
+ 0006 ED06              ldy 6,x
+ 0008 0E40800F          brset 0,y,#128,L2
+ 000C                   .dbline 6
+ 000C           ;        {
+ 000C                   .dbline 7
+ 000C           ;               *speed = *speed << 1;
+ 000C ED02              ldy 2,x
+ 000E E640              ldab 0,y
+ 0010 87                clra
+ 0011 59                lsld
+ 0012 ED02              ldy 2,x
+ 0014 6B40              stab 0,y
+ 0016                   .dbline 8
+ 0016           ;               return 0;
+ 0016 CC0000            ldd #0
+ 0019 2051              bra L1
+ 001B           L2:
+ 001B                   .dbline 11
+ 001B           ;        }
+ 001B           ;        else
+ 001B           ;        {
+ 001B                   .dbline 13
+ 001B           ;        
+ 001B           ;               if( !(*proximity & 0x0003) ) //N, NE
+ 001B ED06              ldy 6,x
+ 001D 0F410302          brclr 1,y,#3,X0
+ 0021 2012              bra L4
+ 0023           X0:
+ 0023                   .dbline 14
+ 0023           ;                       *proximity = (*proximity | 0x0200) & 0xFEFF;
+ 0023 ECE30006          ldd [6,x]
+ 0027 8A02              ora #2
+ 0029 CA00              orb #0
+ 002B 84FE              anda #254
+ 002D C4FF              andb #255
+ 002F ED06              ldy 6,x
+ 0031 6C40              std 0,y
+ 0033 2034              bra L5
+ 0035           L4:
+ 0035                   .dbline 15
+ 0035           ;               else if( !(*proximity & 0x0007) || !((*proximity & 0x0007)-1) )
+ 0035 ECE30006          ldd [6,x]
+ 0039 8400              anda #0
+ 003B C407              andb #7
+ 003D 6C1E              std -2,x
+ 003F 2707              beq L8
+ 0041 EC1E              ldd -2,x
+ 0043 830001            subd #1
+ 0046 2612              bne L6
+ 0048           L8:
+ 0048                   .dbline 16
+ 0048           ;                       *proximity = (*proximity | 0x0100) & 0xFDFF;
+ 0048 ECE30006          ldd [6,x]
+ 004C 8A01              ora #1
+ 004E CA00              orb #0
+ 0050 84FD              anda #253
+ 0052 C4FF              andb #255
+ 0054 ED06              ldy 6,x
+ 0056 6C40              std 0,y
+ 0058 200F              bra L7
+ 005A           L6:
+ 005A                   .dbline 18
+ 005A           ;               else
+ 005A           ;                       *speed = *speed >> 3;
+ 005A ED02              ldy 2,x
+ 005C E640              ldab 0,y
+ 005E 87                clra
+ 005F 47                asra
+ 0060 56                rorb
+ 0061 47                asra
+ 0062 56                rorb
+ 0063 47                asra
+ 0064 56                rorb
+ 0065 ED02              ldy 2,x
+ 0067 6B40              stab 0,y
+ 0069           L7:
+ 0069           L5:
+ 0069                   .dbline 20
+ 0069           ; 
+ 0069           ;                       return 1;
+ 0069 CC0001            ldd #1
+ 006C                   .dbline -2
+ 006C           L1:
+ 006C B757              tfr x,s
+ 006E 30                pulx
+ 006F 1B82              leas 2,sp
+ 0071                   .dbline 0 ; func end
+ 0071 3D                rts
+ 0072                   .dbsym l proximity 6 pi
+ 0072                   .dbsym l speed 2 pc
+ 0072                   .dbend
+ 0072                   .dbfunc e main _main fV
+ 0072           ;      proxomity -> -3,x
+ 0072           ;          speed -> -1,x
+ 0072           _main::
+ 0072 34                pshx
+ 0073 B775              tfr s,x
+ 0075 1B98              leas -8,sp
+ 0077                   .dbline -1
+ 0077                   .dbline 25
+ 0077           ;        }
+ 0077           ; }
+ 0077           ; 
+ 0077           ; void main()
+ 0077           ; {
+ 0077                   .dbline 29
+ 0077           ; 
+ 0077           ;        //Speed: 01101011b (0x6B)
+ 0077           ;        
+ 0077           ;        char speed = 0x6B;
+ 0077 C66B              ldab #107
+ 0079 6B1F              stab -1,x
+ 007B                   .dbline 30
+ 007B           ;        unsigned int proxomity = 0x02C5; //Proxomity: 0000001011000101b (0x02C5)
+ 007B CC02C5            ldd #709
+ 007E 6C1D              std -3,x
+ 0080                   .dbline 31
+ 0080           ;        printf("  Proximity: 0x%x Speed: 0x%x\n", proxomity, speed);
+ 0080 E61F              ldab -1,x
+ 0082 87                clra
+ 0083 6C82              std 2,sp
+ 0085 18021D80          movw -3,x,0,sp
+ 0089 CC0164            ldd #L10
+ 008C 160000            jsr _printf
+ 008F                   .dbline 32
+ 008F           ;        collision_detection(&speed, &proxomity);
+ 008F 191D              leay -3,x
+ 0091 6D80              sty 0,sp
+ 0093 191F              leay -1,x
+ 0095 B7C6              xgdy
+ 0097 160000            jsr _collision_detection
+ 009A                   .dbline 33
+ 009A           ;        printf("> Proximity: 0x%x Speed: 0x%x\n\n", proxomity, speed);
+ 009A E61F              ldab -1,x
+ 009C 87                clra
+ 009D 6C82              std 2,sp
+ 009F 18021D80          movw -3,x,0,sp
+ 00A3 CC0144            ldd #L11
+ 00A6 160000            jsr _printf
+ 00A9                   .dbline 35
+ 00A9           ;        
+ 00A9           ;        speed = 0x6B;
+ 00A9 C66B              ldab #107
+ 00AB 6B1F              stab -1,x
+ 00AD                   .dbline 36
+ 00AD           ;        proxomity = 0x81C4; //Proxomity: 1000000111000100b (0x81C4)
+ 00AD CC81C4            ldd #0x81c4
+ 00B0 6C1D              std -3,x
+ 00B2                   .dbline 37
+ 00B2           ;        printf("  Proximity: 0x%x Speed: 0x%x\n", proxomity, speed);
+ 00B2 E61F              ldab -1,x
+ 00B4 87                clra
+ 00B5 6C82              std 2,sp
+ 00B7 18021D80          movw -3,x,0,sp
+ 00BB CC0164            ldd #L10
+ 00BE 160000            jsr _printf
+ 00C1                   .dbline 38
+ 00C1           ;        collision_detection(&speed, &proxomity);
+ 00C1 191D              leay -3,x
+ 00C3 6D80              sty 0,sp
+ 00C5 191F              leay -1,x
+ 00C7 B7C6              xgdy
+ 00C9 160000            jsr _collision_detection
+ 00CC                   .dbline 39
+ 00CC           ;        printf("> Proximity: 0x%x Speed: 0x%x\n\n", proxomity, speed);
+ 00CC E61F              ldab -1,x
+ 00CE 87                clra
+ 00CF 6C82              std 2,sp
+ 00D1 18021D80          movw -3,x,0,sp
+ 00D5 CC0144            ldd #L11
+ 00D8 160000            jsr _printf
+ 00DB                   .dbline 41
+ 00DB           ; 
+ 00DB           ;        speed = 0x6B;
+ 00DB C66B              ldab #107
+ 00DD 6B1F              stab -1,x
+ 00DF                   .dbline 42
+ 00DF           ;        proxomity = 0x82C1; //Proxomity: 1000001011000001b (0x82C1)
+ 00DF CC82C1            ldd #0x82c1
+ 00E2 6C1D              std -3,x
+ 00E4                   .dbline 43
+ 00E4           ;        printf("  Proximity: 0x%x Speed: 0x%x\n", proxomity, speed);
+ 00E4 E61F              ldab -1,x
+ 00E6 87                clra
+ 00E7 6C82              std 2,sp
+ 00E9 18021D80          movw -3,x,0,sp
+ 00ED CC0164            ldd #L10
+ 00F0 160000            jsr _printf
+ 00F3                   .dbline 44
+ 00F3           ;        collision_detection(&speed, &proxomity);
+ 00F3 191D              leay -3,x
+ 00F5 6D80              sty 0,sp
+ 00F7 191F              leay -1,x
+ 00F9 B7C6              xgdy
+ 00FB 160000            jsr _collision_detection
+ 00FE                   .dbline 45
+ 00FE           ;        printf("> Proximity: 0x%x Speed: 0x%x\n\n", proxomity, speed);
+ 00FE E61F              ldab -1,x
+ 0100 87                clra
+ 0101 6C82              std 2,sp
+ 0103 18021D80          movw -3,x,0,sp
+ 0107 CC0144            ldd #L11
+ 010A 160000            jsr _printf
+ 010D                   .dbline 47
+ 010D           ; 
+ 010D           ;        speed = 0x6B;   
+ 010D C66B              ldab #107
+ 010F 6B1F              stab -1,x
+ 0111                   .dbline 48
+ 0111           ;        proxomity = 0x80C5; //Proxomity: 1000000011000101b (0x80C5)
+ 0111 CC80C5            ldd #0x80c5
+ 0114 6C1D              std -3,x
+ 0116                   .dbline 49
+ 0116           ;        printf("  Proximity: 0x%x Speed: 0x%x\n", proxomity, speed);
+ 0116 E61F              ldab -1,x
+ 0118 87                clra
+ 0119 6C82              std 2,sp
+ 011B 18021D80          movw -3,x,0,sp
+ 011F CC0164            ldd #L10
+ 0122 160000            jsr _printf
+ 0125                   .dbline 50
+ 0125           ;        collision_detection(&speed, &proxomity);
+ 0125 191D              leay -3,x
+ 0127 6D80              sty 0,sp
+ 0129 191F              leay -1,x
+ 012B B7C6              xgdy
+ 012D 160000            jsr _collision_detection
+ 0130                   .dbline 51
+ 0130           ;        printf("> Proximity: 0x%x Speed: 0x%x\n\n", proxomity, speed);
+ 0130 E61F              ldab -1,x
+ 0132 87                clra
+ 0133 6C82              std 2,sp
+ 0135 18021D80          movw -3,x,0,sp
+ 0139 CC0144            ldd #L11
+ 013C 160000            jsr _printf
+ 013F                   .dbline 53
+ 013F           ;        
+ 013F           ;        asm("SWI"); 
+ 013F 3F                        SWI
+ 0140           
+ 0140                   .dbline -2
+ 0140                   .dbline 54
+ 0140           ; }
+ 0140           L9:
+ 0140 B757              tfr x,s
+ 0142 30                pulx
+ 0143                   .dbline 0 ; func end
+ 0143 3D                rts
+ 0144                   .dbsym l proxomity -3 i
+ 0144                   .dbsym l speed -1 c
+ 0144                   .dbend
+ 0144           L11:
+ 0144 3E2050726F78696D6974793A20307825  .byte 62,32,'P,'r,'o,'x,'i,'m,'i,'t,'y,58,32,48,'x,37
+ 0154 782053706565643A20307825780A0A00  .byte 'x,32,'S,'p,'e,'e,'d,58,32,48,'x,37,'x,10,10,0
+ 0164           L10:
+ 0164 202050726F78696D6974793A20307825  .byte 32,32,'P,'r,'o,'x,'i,'m,'i,'t,'y,58,32,48,'x,37
+ 0174 782053706565643A20307825780A00    .byte 'x,32,'S,'p,'e,'e,'d,58,32,48,'x,37,'x,10,0

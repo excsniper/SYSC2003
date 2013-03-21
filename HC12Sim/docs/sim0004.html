@@ -1,0 +1,280 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Corel WordPerfect 8">
+<TITLE>68HC12 Simulator Implementation Notes</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#551a8b" ALINK="#ff0000" BGCOLOR="#ffffff">
+<H1><A NAME="0top"></A>68HC12 Simulator Implementation Notes</H1>
+
+<P>The 68HC12 Simulator is written in Java in a modular fashion so it can be modified for specific needs. Here is the status of the
+various modules. "NYI" means Not Yet Implemented. "UI" means User Interface.</P>
+
+<P>Index</P>
+
+<UL>
+  <LI><A HREF="#CPU12">CPU12</A></LI>
+  <LI><A HREF="#Memory">Memory</A></LI>
+  <LI><A HREF="#UI Execution control">User Interface Execution Control</A></LI>
+  <LI>68HC12 Technical Summary</LI>
+  <UL>
+    <LI><A HREF="#Reference to 68HC12 Technical Summary">4 Register Block</A></LI>
+    <LI><A HREF="#5 Bus Control and Input/Output">5 Bus Control and Input/Output</A></LI>
+    <LI><A HREF="#6 Operating Modes and Resource Mapping">6 Operating Modes and Resource Mapping</A></LI>
+    <LI><A HREF="#7 EEPROM">7 EEPROM</A></LI>
+    <LI><A HREF="#8 Memory Expansion and Chip Select">8 Memory Expansion and Chip Select</A></LI>
+    <LI><A HREF="#9 Resets and Interrupts">9 Resets and Interrupts</A></LI>
+    <LI><A HREF="#10 Key wakeups">10 Key Wakeups</A></LI>
+    <LI><A HREF="#11 Clock functions">11 Clock Functions</A></LI>
+    <LI><A HREF="#12 PLL">12 Phase-Locked Loop</A></LI>
+    <LI><A HREF="#13 Standard Timer Module">13 Standard Timer Module</A></LI>
+    <LI><A HREF="#14 Multiple Serial Interface">14 Multiple Serial Interface</A></LI>
+    <LI><A HREF="#15 Analog to Digital Converter">15 Analog to Digital Converter</A></LI>
+  </UL>
+</UL>
+<H2><A NAME="CPU12"></A>CPU12</H2>
+
+<P>All instructions are simulated. Invalid operand bytes will cause an exception (which doesn't happen in a real 68HC12). The
+BGND instruction is simulated by causing an exception. This allow stopping a simulation programatically.</P>
+
+<P>Instruction timing is intended to match the real processor, however the order of memory accesses might vary in ways which
+should not affect any results. Also, all time is considered to be taken at the end of instruction execution, which, for example,
+will mean that reading TCNT will give a different (and larger) value than would be obtained in a real 68HC12.</P>
+
+<P>CPU registers are observable via the RegisterView display panel. Current state ("Running", "Waiting", "Stopped") is also
+observable. In the register view, changing the PC value (and hitting "Enter" in the edit control or stepping the simulator) will
+reload the CPU's instruction queue without consuming clock ticks. Changing the PC value will also change the current state to
+Running.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H2><A NAME="Memory"></A>Memory</H2>
+
+<P>A "plug-able" interface handles the memory simulation. The default provided memory module mimics the 68HC11EVB
+evaluation board environment:</P>
+
+<UL>
+  <LI>Register block -- $0-$1FF (except $0-$7 and $20-$21)</LI>
+</UL>
+
+<UL>
+  <LI>Onboard RAM -- $800-$BFF</LI>
+</UL>
+
+<UL>
+  <LI>EEPROM -- $1000-$1FFF</LI>
+</UL>
+
+<UL>
+  <LI>External RAM -- $4000-7FFF, mirrored at $0000-$3FFF where there are holes</LI>
+</UL>
+
+<UL>
+  <LI>External ROM -- $8000-$FFFF (monitor simulator and vectors)</LI>
+</UL>
+
+<P>When operated in Single Chip Mode, the external RAM and ROM are not available, and the internal EEPROM is mapped from
+$F000 to $FFFF. When simulating a 68HC912B32 (in single chip mode) the memory map is:</P>
+
+<UL>
+  <LI>Register block - $0- $1FF</LI>
+  <LI>RAM - $800-$BFF</LI>
+  <LI>EEPROM - $D00-$FFF</LI>
+  <LI>Flash ROM - $8000-$FFFF</LI>
+</UL>
+
+<P>The 68HC12EVB D-BUG12 debugger uses $A00 to $BFF, however these locations are available in the simulation. For
+compatibility, however, only locations $800-$9FF should be used, and the stack pointer should be initialized to $A00.</P>
+
+<P>The EEPROM can be written via a program (following the required procedure) or from the UI.  </P>
+
+<P>The external RAM and ROM should be configured to have a one ECLK stretch (set location $3E to $35) rather than the
+default 3 clock stretch for accurate timing measurements. Accessing the external RAM or EEPROM 16 bit non-aligned causes
+additional cycle(s) as described in the Motorola documentation. </P>
+
+<P>An additional ROM space is provided at $8000-$FFFF for reset/interrupt vectors, or loading a monitor simulator, to allow
+programs to be developed on the simulator and run without change on the EVB. Note that this should be configured for one
+ECLK stretch  just like the external RAM.</P>
+
+<P>The registers INITRM, INITRG, and INITEE (and also MISC for the 68HC912B32) can be changed to alter the memory map.</P>
+
+<P>Memory is observable and alterable via the Memory View display panel. Observing register locations via the Memory View is
+considered to be secretly peeking at the values, and does not count as a "read" in those cases where reading the register
+modifies the processor state. This is normally a good thing, but it also means that some things, such as the SCI, can not be
+operated manually through the Memory View.</P>
+
+<P>Although not part of the 68HC12 design, the simulator can report invalid memory accessing (writing to ROM, or accessing
+unassigned address space) either to the console/log, or by generating an exception condition that stops the execution and
+reports the problem to the user. Accessing locations in the register block that are not simulated is also considered to be an
+error.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H2><A NAME="UI Execution control"></A>UI Execution control</H2>
+
+<P>Execution can be "single stepped". A step consists of executing an instruction followed by stacking for a pending interrupt (if
+any). In the case of WAI instructions, a step can represent one time unit of waiting. In the case of STOP instructions, no time
+passes in a step because the clocks are stopped. Number of steps can be set, however execution will stop immediately on
+memory error (when "trap" is selected) or an unimplemented instruction is reached.</P>
+
+<P>For "Go" type operation, execution can be started, and will halt if one of the following occurs:</P>
+
+<UL>
+  <LI>Breakpoint is reached</LI>
+</UL>
+
+<UL>
+  <LI>Stop button pressed</LI>
+</UL>
+
+<UL>
+  <LI>Stop instruction is executed</LI>
+</UL>
+
+<UL>
+  <LI>Memory error ("trap" selected) or the BGND instruction is executed.</LI>
+</UL>
+
+<P>Note that when the processor is in STOPPED state, the only way to proceed is to cause an external interrupt -- IRQ, XIRQ,
+RESET. However changing the PC value will switch the state to RUNNING. When running (either by stepping or by "Go")
+the display will not be updated (exception -- the serial terminal interface). When running via "Go" all inputs are active (IRQ,
+XIRQ, RESET, port T, port J, port H).</P>
+
+<P>The "Step Over" operation is a combination of "Step" and "Go" in that a JSR, BSR or CALL will cause a "Go" with a special,
+additional breakpoint set at the instruction following the JSR, BSR, or CALL. "Step Over" will cause a WAI instruction to
+finish its wait. If the instruction is not a JSR, BSR, or CALL, then only that instruction is executed ("step" mode).</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H2><A NAME="Reference to 68HC12 Technical Summary"></A>Reference to 68HC12 Technical Summary</H2>
+<H3>4 Register Block</H3>
+
+<P>Unimplemented register access is considered to be an error, to aid in debugging.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="5 Bus Control and Input/Output"></A>5 Bus Control and Input/Output</H3>
+
+<P>PORTA, DDRA, PORTB, DDRB, PORTC, DDRC, PORTD, and DDRD are not in the register map in the simulated Normal
+Expanded Wide mode. PORTD and DDRD are added in the Narrow Memory Model mode,</P>
+
+<P>while PORTA, DDRA, PORTB, DDRB, PORTD, and DDRD are added in Single Chip Memory Model mode. For the
+68HC912B32 mode, ports A and B (PORTA, DDRA, PORTB, and DDRB registers) are available.</P>
+
+<P>Port E can be programmed as output pins (using DDRE and PEAR), however the simulator views these output pins as simply
+latched data. The IRQ and XIRQ inputs in PORTE are implemented. Other "Alternate" functions are not implemented and
+there is no test for invalid settings (such as disabling the alternate function for a pin that is probably needed.</P>
+
+<P>PUCR and RDRIV are implemented, but have no effect.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="6 Operating Modes and Resource Mapping"></A>6 Operating Modes and Resource Mapping</H3>
+
+<P>Register bits that are documented to be "write once" are "read only" in the simulator, with exceptions noted. </P>
+
+<P><EM>MODE Register always reads $F0 (in Normal Expanded Wide Mode), $B0 (Normal Expanded Narrow Mode), $90 (Single
+Chip Mode or 68HC912B32 mode).</EM></P>
+
+<P><EM>MISC  always reads 0</EM> <EM>(except for 68HC912B32 mode for which MISC is implemented)</EM></P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="7 EEPROM"></A>7 EEPROM</H3>
+
+<P>EEPROM programming implemented. PROTLOC bit forced to 0, EESWAI ignored. A warning is given if less than 10 msec
+allowed for programming.</P>
+
+<P>The Simulator user interface cannot be used to program the EEPROM by accessing the programming registers since time does
+not pass. Instead, store directly into the locations.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="8 Memory Expansion and Chip Select"></A>8 Memory Expansion and Chip Select</H3>
+
+<P>No plans to implement memory expansion, however PPAGE is implemented but paging is forced to disabled. This also means
+that ports F and G are not implemented or available for I/O, even though a few pins are available in the EVB.</P>
+
+<P>CS0, CS1, CS2, and CS3 are implemented (CSCTL0), and when in use behave like separate RAM memory regions (i.e. they
+can be read and written). Writing these locations can be reported to the log. </P>
+
+<P>CSP1, CSP2, and CSD are implemented (CSCTL1) but settings are ignored.</P>
+
+<P>CSSTR0 and CSSTR1 are implemented. To get performance matching that of the EVB, CSSTR0 needs to be set to $35
+instead of the default $3F.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="9 Resets and Interrupts"></A>9 Resets and Interrupts</H3>
+
+<P>/RESET, /XIRQ, and /IRQ pins are simulated with UI check boxes. These are automatically reset when the interrupt is taken
+to aid in simulation.  A UI menu item simulates a Power On Reset, and resets the internal RAM memory to $BEADFACE,
+repeated, to represent uninitialized memory.</P>
+
+<P>If an interrupt occurs, and the interrupt vector has a value of 0, it is assumed to be an error and the simulation stops.</P>
+
+<P>INTCR, IRQEN bit implemented.</P>
+
+<P>HPRIO implemented.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="10 Key wakeups"></A>10 Key wakeups</H3>
+
+<P>Ports H and J implemented. Port D is not available for expanded mode, in which the simulator runs. PUPSJ and PULEJ
+ignored.  Changes to the output may be reported to the log. Changes in Port H and J input via the UI are only seen when the
+CPU is then stepped.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="11 Clock functions"></A>11 Clock functions</H3>
+
+<P>Sections 11, 12, 13 implemented in Clock module.</P>
+
+<P>COP Watchdog Implemented. COPCTL can be written once, typically to turn off the COP Watchdog. RTI is implemented.</P>
+
+<P>Clock Monitor-  no plans to implement.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="12 PLL"></A>12 PLL</H3>
+
+<P>This functionality does not apply to the 68HC912B32 part.</P>
+
+<P>Sections 11, 12, 13 implemented in Clock module.</P>
+
+<P>Of course, there is no real clock generator! </P>
+
+<P>PLL registers: LDV, RDV ignored, CLKCTL LCKF follows PLLON, MCS implemented. No plans to implement BCS.
+Indicated execution time assumes 8 Mhz E&amp;P clocks.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="13 Standard Timer Module"></A>13 Standard Timer Module</H3>
+
+<P>Sections 11, 12, 13 implemented in Clock module.</P>
+
+<P>The CLK0 and CLK1 bits of PACTL are not implemented, and are assumed to be zero. PA input cannot be driven from OC7. 
+Port T has a UI, but needs to be able to be overridden by algorithm or file. Changing Port T inputs via the UI while execution
+is stopped will not cause a capture to occur until the CPU is stepped (time is consumed).</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="14 Multiple Serial Interface"></A>14 Multiple Serial Interface</H3>
+
+<P>One SCI, SCI 0, is implemented, and has a terminal emulator interface. The terminal emulator will display printable ASCII
+characters, and responds to control characters: Control-H (backspace), Control-M (carriage return), Control-J (line feed),
+Control-G (bell), and Control-Z to erase the "screen".</P>
+
+<P>Nobody really wants serial communication rates to scale, so communication will be close to instantaneous if "Turbo" mode is
+selected. </P>
+
+<P>Since there is no actual serial communication, it is easy to overrun the receiver by typing too fast, especially when not in turbo
+mode.</P>
+
+<P>SC0CR1 is ignored. SC0CR2: RWU, ILIE and SBK are ignored. SC0SC2: IDLE NF FE and PF bits are not implemented.
+SC0SR2 is ignored.</P>
+
+<P>No plan to implement SPI.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+<H3><A NAME="15 Analog to Digital Converter"></A>15 Analog to Digital Converter</H3>
+
+<P>AWAI bit not implemented. ATDCTL3 ignored. PORTAD assumes values of $80 to $FF are "1" while those less than $80 are
+"0". Sampling is performed at time ADRnH is loaded, which isn't realistic. </P>
+
+<P>In the case of the 68HC912B32, the ADC only operates in 8 bit conversion mode.</P>
+
+<P>Programable interface planned.</P>
+
+<P><A HREF="#0top">(Return to top of page)</A></P>
+
+<BR WP="BR1"><BR WP="BR2">
+</BODY>
+</HTML>
